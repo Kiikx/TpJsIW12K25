@@ -5,7 +5,7 @@ let selectedAnswer = null;
 let advancedPokemonQuestions = [
     new Question('Quel est le numéro national de Mewtwo dans le Pokédex ?', ['149', '150', '151', '152'], 2),
     new Question('Quel est le type secondaire de Dracaufeu dans sa forme Méga X ?', ['Dragon', 'Vol', 'Feu', 'Acier'], 1),
-    new Question('Quelle capacité permet à Métamorph de copier les statistiques et attaques de son adversaire ?', ['Morphing', 'Imitation', 'Clone', 'Transfo'], 4),
+    new Question('Quelle capacité permet à Métamorph de copier les statistiques et attaques de son adversaire ?', ['Transfo', 'Imitation', 'Clone', 'Morphing'], 4),
     new Question('Quel Pokémon légendaire est connu pour avoir créé les continents ?', ['Kyogre', 'Groudon', 'Rayquaza', 'Dialga'], 2),
     new Question('Quel est le nom de l\'attaque signature de Lucario ?', ['Aurasphère', 'Close Combat', 'Poing Boost', 'Vitesse Extrême'], 1),
     new Question('Quel est le type unique de Spiritomb avant la génération 6 ?', ['Spectre', 'Ténèbres', 'Spectre/Ténèbres', 'Psy'], 3),
@@ -44,7 +44,6 @@ function handleAnswerSelection(answerIndex) {
     selectedAnswer = answerIndex;
 
     let answerButtons = document.querySelectorAll('#answerButton');
-    console.log(answerButtons);
 
 
     answerButtons.forEach(button => button.classList.remove('selected'));
@@ -55,7 +54,10 @@ function handleAnswerSelection(answerIndex) {
 function handleNextQuestion() {
 
     if (selectedAnswer !== null) {
+
         userAnswers.push(selectedAnswer);
+        
+
         if (advancedPokemonQuestions[currentQuestionIndex].isCorrectAnswer(selectedAnswer)) {
             score++;
         }
@@ -89,6 +91,7 @@ function displayScore() {
     scoreText.innerHTML = `Votre score est : ${score} / ${questionCount}`;
     quizContainer.appendChild(scoreText);
 
+    
     let reportContainer = document.createElement('div');
     reportContainer.id = 'report-container';
 
@@ -105,9 +108,10 @@ function displayScore() {
         questionReport.appendChild(correctAnswer);
 
         let userAnswer = document.createElement('p');
-        let userAnswerText = userAnswers[index] ? question.possibleAnswers[userAnswers[index] - 1] : 'Aucune réponse';
+        let userAnswerIndex = userAnswers[index];
+        let userAnswerText = userAnswerIndex ? question.possibleAnswers[userAnswerIndex - 1] : 'Aucune réponse';
         userAnswer.innerHTML = `<strong>Votre réponse :</strong> ${userAnswerText}`;
-        userAnswer.style.color = question.isCorrectAnswer(userAnswers[index]) ? 'green' : 'red';
+        userAnswer.style.color = userAnswerIndex === question.correctAnswer ? 'green' : 'red';
         questionReport.appendChild(userAnswer);
 
         reportContainer.appendChild(questionReport);
@@ -144,6 +148,7 @@ function updateProgressBar() {
 function resetQuizz() {
     score = 0;
     currentQuestionIndex = 0;
+    userAnswers = [];
     resetQuizzDisplay();
     displayQuestion(advancedPokemonQuestions[currentQuestionIndex]);
 }
