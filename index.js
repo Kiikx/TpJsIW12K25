@@ -107,7 +107,7 @@ function displayScore() {
         let userAnswer = document.createElement('p');
         let userAnswerText = userAnswers[index] ? question.possibleAnswers[userAnswers[index] - 1] : 'Aucune réponse';
         userAnswer.innerHTML = `<strong>Votre réponse :</strong> ${userAnswerText}`;
-        userAnswer.style.color = userAnswers[index] === question.correctAnswer ? 'green' : 'red';
+        userAnswer.style.color = question.isCorrectAnswer(userAnswers[index]) ? 'green' : 'red';
         questionReport.appendChild(userAnswer);
 
         reportContainer.appendChild(questionReport);
